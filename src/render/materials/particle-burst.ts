@@ -17,9 +17,9 @@ export function makeParticleBurst(opts: { hue: number }): THREE.ShaderMaterial {
       void main() {
         float age = uTime - birth;
         vec3 p = position + velocity * age;
-        vAge = clamp(age / 0.6, 0.0, 1.0);
+        vAge = clamp(age / 1.0, 0.0, 1.0);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-        gl_PointSize = mix(8.0, 1.0, vAge);
+        gl_PointSize = mix(14.0, 1.0, vAge);
       }
     `,
 		fragmentShader: /* glsl */ `

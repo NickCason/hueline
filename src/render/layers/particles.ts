@@ -10,7 +10,7 @@ export function makeParticlesLayer(): {
 } {
 	const group = new THREE.Group();
 	const bursts: Burst[] = [];
-	const PARTICLES = 32;
+	const PARTICLES = 64;
 
 	const emit = (pos: THREE.Vector3, hue: number, t: number) => {
 		const geo = new THREE.BufferGeometry();
@@ -21,12 +21,13 @@ export function makeParticlesLayer(): {
 			positions[i * 3 + 0] = pos.x;
 			positions[i * 3 + 1] = pos.y;
 			positions[i * 3 + 2] = pos.z;
-			const dir = new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)
-				.normalize()
-				.multiplyScalar(2 + Math.random() * 3);
-			velocities[i * 3 + 0] = dir.x;
-			velocities[i * 3 + 1] = dir.y;
-			velocities[i * 3 + 2] = dir.z;
+			// Bias toward an outward ring in the XY plane (more theatrical shatter).
+			const angle = (i / PARTICLES) * Math.PI * 2 + Math.random() * 0.3;
+			const ringR = 4 + Math.random() * 3;
+			const zJitter = (Math.random() - 0.5) * 2.5;
+			velocities[i * 3 + 0] = Math.cos(angle) * ringR;
+			velocities[i * 3 + 1] = Math.sin(angle) * ringR;
+			velocities[i * 3 + 2] = zJitter;
 			births[i] = t;
 		}
 		geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -37,7 +38,7 @@ export function makeParticlesLayer(): {
 		mat.uniforms.uTime.value = t;
 		const mesh = new THREE.Points(geo, mat);
 		group.add(mesh);
-		bursts.push({ mesh, mat, born: t, ttl: 0.7 });
+		bursts.push({ mesh, mat, born: t, ttl: 1.0 });
 	};
 
 	const tick = (t: number) => {
