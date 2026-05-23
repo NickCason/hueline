@@ -15,12 +15,14 @@ export function makeSyncContext(ctx: RenderContext) {
 	const particles = makeParticlesLayer();
 	ctx.root.add(tunnel.object, barriers.object, player.object, particles.object);
 
+	let lastElapsed = 0;
 	let lastScore = 0;
 
 	return {
 		sync(state: GameState, elapsed: number) {
-			// Only emit a burst when score actually went up (a real break) — not for
-			// lane-mismatch barriers that silently passed through.
+			const dt = lastElapsed === 0 ? 0.016 : elapsed - lastElapsed;
+			lastElapsed = elapsed;
+
 			if (state.run.score > lastScore) {
 				const laneWidth = 12 / state.tuning.laneCount;
 				const x = -6 + laneWidth * (state.player.lane + 0.5);
@@ -30,7 +32,7 @@ export function makeSyncContext(ctx: RenderContext) {
 
 			tunnel.tick(elapsed);
 			barriers.sync(state.barriers, elapsed);
-			player.sync(state.player, elapsed);
+			player.sync(state.player, elapsed, dt);
 			particles.tick(elapsed);
 		}
 	};
