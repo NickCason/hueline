@@ -24,9 +24,7 @@ export function makeSyncContext(ctx: RenderContext) {
 			lastElapsed = elapsed;
 
 			if (state.run.score > lastScore) {
-				const laneWidth = 12 / state.tuning.laneCount;
-				const x = -6 + laneWidth * (state.player.lane + 0.5);
-				particles.emit(new THREE.Vector3(x, 0.6, 0), state.player.hue, elapsed);
+				particles.emit(new THREE.Vector3(0, 0.6, 0), state.player.hue, elapsed);
 			}
 			lastScore = state.run.score;
 

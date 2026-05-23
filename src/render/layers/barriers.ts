@@ -1,11 +1,14 @@
 import * as THREE from 'three';
 import type { Barrier } from '../../game/components';
-import { makeBarrierPlane } from '../geometry/barrier';
+import { makeRingFrame } from '../geometry/ring';
 import { makeGlassIridescent } from '../materials/glass-iridescent';
 import { makeBarrierGradient } from '../materials/barrier-gradient';
-import { TUNING } from '../../game/tuning';
 
 type Pool = Map<number, THREE.Mesh>;
+
+const RING_OUTER_W = 11;
+const RING_OUTER_H = 7;
+const RING_THICKNESS = 0.7;
 
 export function makeBarriersLayer(): {
 	object: THREE.Object3D;
@@ -13,7 +16,6 @@ export function makeBarriersLayer(): {
 } {
 	const group = new THREE.Group();
 	const pool: Pool = new Map();
-	const laneWidth = 12 / TUNING.laneCount;
 
 	const sync = (barriers: Barrier[], t: number) => {
 		const seenIds = new Set<number>();
@@ -21,7 +23,11 @@ export function makeBarriersLayer(): {
 			seenIds.add(b.id);
 			let mesh = pool.get(b.id);
 			if (!mesh) {
-				const geo = makeBarrierPlane({ width: laneWidth * 0.92, height: 1.2 });
+				const geo = makeRingFrame({
+					outerW: RING_OUTER_W,
+					outerH: RING_OUTER_H,
+					thickness: RING_THICKNESS
+				});
 				const mat = b.gradient
 					? makeBarrierGradient({ from: b.gradient.from, to: b.gradient.to })
 					: makeGlassIridescent({ hue: b.targetHue });
@@ -29,8 +35,8 @@ export function makeBarriersLayer(): {
 				pool.set(b.id, mesh);
 				group.add(mesh);
 			}
-			const xCenter = -6 + laneWidth * (b.lane + 0.5);
-			mesh.position.set(xCenter, 0.6, b.z);
+			// Frame is centered around the orb's y-line (0.6) and at the barrier's z.
+			mesh.position.set(0, 0.6, b.z);
 			const u = (mesh.material as THREE.ShaderMaterial).uniforms;
 			if (u.uTime) u.uTime.value = t;
 		}
