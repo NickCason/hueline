@@ -32,6 +32,12 @@
 		p = loadProgress();
 	});
 
+	function grantChroma() {
+		if (!p) return;
+		p = { ...p, currency: p.currency + 100 };
+		saveProgress(localStorage, p);
+	}
+
 	function buy(key: UpgradeKey) {
 		if (!p) return;
 		const lvl = p.upgrades[key];
@@ -72,6 +78,7 @@
 		<header>
 			<a href="{base}/">←</a>
 			<h1>Shop</h1>
+			<button class="grant" onclick={grantChroma}>+100</button>
 			<div class="balance">{p.currency} chroma</div>
 		</header>
 
@@ -149,6 +156,18 @@
 	.balance {
 		color: #aaff00;
 		font-weight: 600;
+	}
+	.grant {
+		padding: 0.3rem 0.6rem;
+		border-radius: 999px;
+		background: rgba(255, 200, 80, 0.15);
+		color: #ffc850;
+		font-size: 0.75rem;
+		min-width: 0;
+		margin-right: 0.5rem;
+	}
+	.grant:hover {
+		background: rgba(255, 200, 80, 0.25);
 	}
 	section h2 {
 		font-size: 0.85rem;
