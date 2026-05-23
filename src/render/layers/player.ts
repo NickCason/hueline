@@ -8,7 +8,7 @@ export function makePlayerLayer(): {
 	object: THREE.Object3D;
 	sync: (p: PlayerState, t: number) => void;
 } {
-	const geo = makeOrb({ radius: 0.6, detail: 2 });
+	const geo = makeOrb({ radius: 0.4, detail: 2 });
 	const mat = makeGlassIridescent({ hue: 0, opacity: 0.9 });
 	const mesh = new THREE.Mesh(geo, mat);
 	const laneWidth = 12 / TUNING.laneCount;
