@@ -29,7 +29,8 @@ export function collisionTick(state: GameState, _dt: number): GameState {
 
 	for (const b of arrived) {
 		if (b.lane !== state.player.lane) {
-			return { ...state, run: { ...state.run, status: 'gameOver', streak: 0 } };
+			// Barrier passed through a different lane — no penalty, no points, no streak break.
+			continue;
 		}
 		let matched = false;
 		if (b.gradient) {

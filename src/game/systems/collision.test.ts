@@ -28,12 +28,13 @@ describe('collisionTick', () => {
 		expect(s2.run.status).toBe('running');
 	});
 
-	it('ends run when player misses lane', () => {
+	it('lets a barrier pass harmlessly when player is in a different lane', () => {
 		const s = playerAt(0, 0);
+		s.player.lane = 0;
 		s.barriers.push({ id: 1, z: -0.1, lane: 1, targetHue: 0, tolerance: 25 });
 		const s2 = collisionTick(s, 0);
-		expect(s2.run.status).toBe('gameOver');
-		expect(s2.run.streak).toBe(0);
+		expect(s2.run.status).toBe('running');
+		expect(s2.barriers.length).toBe(0); // barrier consumed
 	});
 
 	it('ends run when player in lane but hue out of tolerance', () => {
