@@ -1,42 +1,41 @@
-# sv
+# Hueline
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+PWA tunnel-runner. Match the hue. Break the wall.
 
-## Creating a project
+Live: https://nickcason.github.io/hueline/
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Status
 
-```sh
-# create a new project
-npx sv create my-app
-```
+v1 game loop. Sound, leaderboards, daily challenges deferred to v2+. See [`docs/superpowers/specs/2026-05-22-hueline-design.md`](docs/superpowers/specs/2026-05-22-hueline-design.md) for the design spec and [`docs/superpowers/plans/2026-05-22-hueline.md`](docs/superpowers/plans/2026-05-22-hueline.md) for the implementation plan.
 
-To recreate this project with the same configuration:
+## Develop
 
-```sh
-# recreate this project
-npx sv@0.15.3 create --template minimal --types ts --add prettier eslint vitest="usages:unit" --no-install .
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Open the printed URL on a mobile device on the same network for the real-feel test (tailnet works too).
 
-To create a production version of your app:
+## Test
 
-```sh
-npm run build
+```bash
+npm run test:unit         # vitest watch
+npm run test:unit -- --run  # vitest single run
+npm run test:e2e          # playwright smoke
 ```
 
-You can preview the production build with `npm run preview`.
+## Build
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+npm run build       # production bundle, regenerates icons via prebuild hook
+npm run preview     # serve the built bundle
+```
+
+## Tuning
+
+All gameplay constants live in [`src/game/tuning.ts`](src/game/tuning.ts). Tweak there, restart dev, playtest.
+
+## Deploy
+
+Push to `main` and GitHub Actions deploys to GitHub Pages automatically. The workflow lives at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Adapter is `@sveltejs/adapter-static` with `paths.base = '/hueline'` in production.
