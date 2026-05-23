@@ -65,12 +65,12 @@
 		const t = e.touches[0];
 		const dx = t.clientX - touchStart.x;
 		const dy = t.clientY - touchStart.y;
-		if (Math.abs(dx) > 32) {
+		if (Math.abs(dx) > 48) {
 			intents.push({ type: 'lane', delta: dx > 0 ? 1 : -1 });
 			touchStart = { x: t.clientX, y: t.clientY };
 		}
 		if (Math.abs(dy) > 4) {
-			intents.push({ type: 'hue', deltaDeg: -dy * 0.6 });
+			intents.push({ type: 'hue', deltaDeg: -dy * 1.5 });
 			touchStart = { x: t.clientX, y: t.clientY };
 		}
 	}
