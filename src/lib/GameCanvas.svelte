@@ -82,7 +82,7 @@
 
 		if (touchMode === 'lane') {
 			if (Math.abs(dx) > LANE_STEP) {
-				intents.push({ type: 'lane', delta: dx > 0 ? 1 : -1 });
+				intents.push({ type: 'lane', delta: dx > 0 ? -1 : 1 });
 				touchStart = { x: t.clientX, y: t.clientY };
 			}
 			// vertical motion is ignored once axis is locked to lane
