@@ -1,11 +1,16 @@
 import * as THREE from 'three';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { TUNING } from '../game/tuning';
 
 export type RenderContext = {
 	renderer: THREE.WebGLRenderer;
+	composer: EffectComposer;
 	scene: THREE.Scene;
 	camera: THREE.PerspectiveCamera;
 	root: THREE.Group;
+	resize: (w: number, h: number) => void;
 	dispose: () => void;
 };
 
@@ -30,8 +35,26 @@ export function makeRenderContext(canvas: HTMLCanvasElement): RenderContext {
 	const root = new THREE.Group();
 	scene.add(root);
 
+	const composer = new EffectComposer(renderer);
+	composer.addPass(new RenderPass(scene, camera));
+	const bloom = new UnrealBloomPass(
+		new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
+		0.9,
+		0.6,
+		0.0
+	);
+	composer.addPass(bloom);
+
+	const resize = (w: number, h: number) => {
+		renderer.setSize(w, h, false);
+		composer.setSize(w, h);
+		camera.aspect = w / h;
+		camera.updateProjectionMatrix();
+	};
+
 	const dispose = () => {
 		renderer.dispose();
+		composer.dispose();
 		scene.traverse((obj) => {
 			const mesh = obj as THREE.Mesh;
 			if (mesh.geometry) mesh.geometry.dispose();
@@ -41,8 +64,7 @@ export function makeRenderContext(canvas: HTMLCanvasElement): RenderContext {
 		});
 	};
 
-	// Verify TUNING accessible (compile-time bind)
 	void TUNING;
 
-	return { renderer, scene, camera, root, dispose };
+	return { renderer, composer, scene, camera, root, resize, dispose };
 }

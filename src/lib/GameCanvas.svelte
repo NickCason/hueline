@@ -28,6 +28,7 @@
 	let intents: Intent[] = [];
 	let rafHandle = 0;
 	let lastTs = 0;
+	let paused = false;
 	let dispose: (() => void) | null = null;
 
 	function onKey(e: KeyboardEvent) {
@@ -85,24 +86,35 @@
 		const resize = () => {
 			const w = canvasEl.clientWidth,
 				h = canvasEl.clientHeight;
-			ctx.renderer.setSize(w, h, false);
-			ctx.camera.aspect = w / h;
-			ctx.camera.updateProjectionMatrix();
+			ctx.resize(w, h);
 		};
 		window.addEventListener('resize', resize);
 
+		const onContextLost = (e: Event) => {
+			e.preventDefault();
+			paused = true;
+		};
+		const onContextRestored = () => {
+			paused = false;
+			lastTs = 0;
+		};
+		canvasEl.addEventListener('webglcontextlost', onContextLost);
+		canvasEl.addEventListener('webglcontextrestored', onContextRestored);
+
 		const loop = (ts: number) => {
-			const dt = lastTs === 0 ? 0 : (ts - lastTs) / 1000;
-			lastTs = ts;
-			const next = tick(state, dt, intents);
-			intents = [];
-			if (next.run.status === 'gameOver' && state.run.status === 'running') {
-				ongameOver?.(next);
+			if (!paused) {
+				const dt = lastTs === 0 ? 0 : (ts - lastTs) / 1000;
+				lastTs = ts;
+				const next = tick(state, dt, intents);
+				intents = [];
+				if (next.run.status === 'gameOver' && state.run.status === 'running') {
+					ongameOver?.(next);
+				}
+				state = next;
+				syncCtx.sync(state, ts / 1000);
+				ctx.composer.render();
+				ontick?.(state);
 			}
-			state = next;
-			syncCtx.sync(state, ts / 1000);
-			ctx.renderer.render(ctx.scene, ctx.camera);
-			ontick?.(state);
 			rafHandle = requestAnimationFrame(loop);
 		};
 		rafHandle = requestAnimationFrame(loop);
@@ -115,6 +127,8 @@
 		return () => {
 			window.removeEventListener('resize', resize);
 			window.removeEventListener('keydown', onKey);
+			canvasEl.removeEventListener('webglcontextlost', onContextLost);
+			canvasEl.removeEventListener('webglcontextrestored', onContextRestored);
 		};
 	});
 
