@@ -35,13 +35,14 @@ export function makeGlassIridescent(opts: { hue: number; opacity?: number }): TH
       }
 
       void main() {
-        float fresnel = pow(1.0 - max(dot(vNormal, vView), 0.0), 2.5);
-        float irid = sin(uTime * 0.6 + fresnel * 12.0) * 0.5 + 0.5;
-        vec3 baseHsv = vec3(uHue / 360.0, 0.55, 0.95);
+        float fresnel = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.5);
+        float shimmer = sin(uTime * 1.2 + fresnel * 8.0) * 0.5 + 0.5;
+        vec3 baseHsv = vec3(uHue / 360.0, 0.90, 0.85);
         vec3 base = hsv2rgb(baseHsv);
-        vec3 iridColor = hsv2rgb(vec3(mod(uHue / 360.0 + irid * 0.15, 1.0), 0.6, 1.0));
-        vec3 color = mix(base, iridColor, fresnel);
-        gl_FragColor = vec4(color, mix(uOpacity, 0.95, fresnel));
+        // Shimmer is a brightness boost layered on top, not a hue shift.
+        vec3 highlight = base + vec3(0.25) * shimmer * fresnel;
+        vec3 color = mix(base, highlight, fresnel * 0.7);
+        gl_FragColor = vec4(color, mix(uOpacity, 0.9, fresnel * 0.5));
       }
     `
 	});
