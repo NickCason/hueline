@@ -1,0 +1,27 @@
+:root {
+	color-scheme: dark;
+}
+html,
+body {
+	margin: 0;
+	height: 100%;
+	background: #000005;
+	color: #fff;
+	overscroll-behavior: contain;
+}
+body {
+	font-family:
+		system-ui,
+		-apple-system,
+		sans-serif;
+}
+* {
+	box-sizing: border-box;
+}
+button {
+	font: inherit;
+	color: inherit;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+}
