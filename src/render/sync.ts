@@ -15,21 +15,18 @@ export function makeSyncContext(ctx: RenderContext) {
 	const particles = makeParticlesLayer();
 	ctx.root.add(tunnel.object, barriers.object, player.object, particles.object);
 
-	let lastBarrierIds = new Set<number>();
-	let lastPlayerHue = 0;
+	let lastScore = 0;
 
 	return {
 		sync(state: GameState, elapsed: number) {
-			const currentIds = new Set(state.barriers.map((b) => b.id));
-			for (const id of lastBarrierIds) {
-				if (!currentIds.has(id)) {
-					const laneWidth = 12 / state.tuning.laneCount;
-					const x = -6 + laneWidth * (state.player.lane + 0.5);
-					particles.emit(new THREE.Vector3(x, 0.6, 0), lastPlayerHue, elapsed);
-				}
+			// Only emit a burst when score actually went up (a real break) — not for
+			// lane-mismatch barriers that silently passed through.
+			if (state.run.score > lastScore) {
+				const laneWidth = 12 / state.tuning.laneCount;
+				const x = -6 + laneWidth * (state.player.lane + 0.5);
+				particles.emit(new THREE.Vector3(x, 0.6, 0), state.player.hue, elapsed);
 			}
-			lastBarrierIds = currentIds;
-			lastPlayerHue = state.player.hue;
+			lastScore = state.run.score;
 
 			tunnel.tick(elapsed);
 			barriers.sync(state.barriers, elapsed);
