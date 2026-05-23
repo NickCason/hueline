@@ -33,71 +33,35 @@
 
 	function onKey(e: KeyboardEvent) {
 		if (state.run.status !== 'running') return;
-		switch (e.key) {
-			case 'ArrowLeft':
-				intents.push({ type: 'lane', delta: -1 });
-				e.preventDefault();
-				break;
-			case 'ArrowRight':
-				intents.push({ type: 'lane', delta: 1 });
-				e.preventDefault();
-				break;
-			case 'ArrowUp':
-				intents.push({ type: 'hue', deltaDeg: 12 });
-				e.preventDefault();
-				break;
-			case 'ArrowDown':
-				intents.push({ type: 'hue', deltaDeg: -12 });
-				e.preventDefault();
-				break;
+		if (e.key === 'ArrowUp') {
+			intents.push({ type: 'hue', deltaDeg: 12 });
+			e.preventDefault();
+		} else if (e.key === 'ArrowDown') {
+			intents.push({ type: 'hue', deltaDeg: -12 });
+			e.preventDefault();
 		}
 	}
 
 	let touchStart: { x: number; y: number } | null = null;
-	let touchMode: 'undecided' | 'lane' | 'hue' = 'undecided';
-	const AXIS_LOCK_THRESHOLD = 12; // px from start before we commit to an axis
-	const LANE_STEP = 48; // px between successive lane changes once locked
 	const HUE_THRESHOLD = 4;
 
 	function onTouchStart(e: TouchEvent) {
 		e.preventDefault();
 		const t = e.touches[0];
 		touchStart = { x: t.clientX, y: t.clientY };
-		touchMode = 'undecided';
 	}
 	function onTouchMove(e: TouchEvent) {
 		if (!touchStart) return;
 		e.preventDefault();
 		const t = e.touches[0];
-		const dx = t.clientX - touchStart.x;
 		const dy = t.clientY - touchStart.y;
-
-		if (touchMode === 'undecided') {
-			if (Math.abs(dx) < AXIS_LOCK_THRESHOLD && Math.abs(dy) < AXIS_LOCK_THRESHOLD) return;
-			touchMode = Math.abs(dx) > Math.abs(dy) ? 'lane' : 'hue';
-			// Snap origin so the lock threshold doesn't double-count.
+		if (Math.abs(dy) > HUE_THRESHOLD) {
+			intents.push({ type: 'hue', deltaDeg: -dy * 1.5 });
 			touchStart = { x: t.clientX, y: t.clientY };
-			return;
-		}
-
-		if (touchMode === 'lane') {
-			if (Math.abs(dx) > LANE_STEP) {
-				intents.push({ type: 'lane', delta: dx > 0 ? -1 : 1 });
-				touchStart = { x: t.clientX, y: t.clientY };
-			}
-			// vertical motion is ignored once axis is locked to lane
-		} else {
-			// hue
-			if (Math.abs(dy) > HUE_THRESHOLD) {
-				intents.push({ type: 'hue', deltaDeg: -dy * 1.5 });
-				touchStart = { x: t.clientX, y: t.clientY };
-			}
-			// horizontal motion is ignored once axis is locked to hue
 		}
 	}
 	function onTouchEnd() {
 		touchStart = null;
-		touchMode = 'undecided';
 	}
 
 	onMount(() => {
