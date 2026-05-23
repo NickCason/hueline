@@ -73,11 +73,11 @@ Streak resets on miss. End-of-run total = sum of all `finalScore` values. Curren
 
 ### Powerups (in-run drops only)
 
-| Powerup | Effect | Duration |
-|---|---|---|
-| Slow-mo | global time scale × 0.4 | 4 s |
+| Powerup          | Effect                                                                            | Duration                  |
+| ---------------- | --------------------------------------------------------------------------------- | ------------------------- |
+| Slow-mo          | global time scale × 0.4                                                           | 4 s                       |
 | Gradient barrier | next 3 barriers display a hue gradient; any hue in the gradient counts as a match | until 3 barriers consumed |
-| Hue magnet | dial auto-snaps within ±10° of incoming barrier hue | 3 s |
+| Hue magnet       | dial auto-snaps within ±10° of incoming barrier hue                               | 3 s                       |
 
 Drop rate: each barrier independently has a 5% chance to spawn an adjacent powerup pickup (Bernoulli, mean ≈ 1 per 20). Multiple powerups can stack; effects compose (slow-mo time scale multiplies magnet snap velocity, gradient barriers still respect slow-mo, etc.).
 
@@ -185,18 +185,18 @@ No PNGs, no GLBs, no audio in v1. The constraint is enforced by `.gitignore` and
 
 ```ts
 type Progress = {
-  version: 1;
-  highScore: number;
-  currency: number;
-  upgrades: {
-    toleranceBonus: number;       // 0..N, each level adds +2° base tolerance
-    rotationCostReduction: number; // 0..N, each level eases dial sensitivity
-    notchedDifficultyDelay: number; // 0..N, each level delays granularity threshold
-  };
-  cosmetics: {
-    unlocked: string[];
-    equipped: { orb: string; tunnel: string };
-  };
+	version: 1;
+	highScore: number;
+	currency: number;
+	upgrades: {
+		toleranceBonus: number; // 0..N, each level adds +2° base tolerance
+		rotationCostReduction: number; // 0..N, each level eases dial sensitivity
+		notchedDifficultyDelay: number; // 0..N, each level delays granularity threshold
+	};
+	cosmetics: {
+		unlocked: string[];
+		equipped: { orb: string; tunnel: string };
+	};
 };
 ```
 
@@ -255,18 +255,18 @@ Sound, leaderboards, daily challenges, more powerups, more cosmetics, landscape 
 
 The following constants ship with starter values and are exposed in `src/game/tuning.ts` for rapid iteration. None are final.
 
-| Constant | Starter value | What it controls |
-|---|---|---|
-| `v0` | 8 units/s | Barrier travel speed at run start |
-| `vmax` | 22 units/s | Barrier travel speed after ramp |
-| `T_ramp` | 60 s | Time to reach `vmax` |
-| `T_smooth` | 20 s | When dial detents disappear |
-| `T_tight` | 45 s | When barrier tolerance shrinks |
-| `toleranceEasy` | 25° | Half-width of acceptance band at low difficulty |
-| `toleranceHard` | 8° | Half-width after `T_tight` |
-| `basePoints` | 100 | Points per break before multipliers |
-| `maxBonusGain` | 0.5 | Maximum tolerance-bonus multiplier (perfect match) |
-| `powerupDropP` | 0.05 | Per-barrier independent drop probability |
+| Constant        | Starter value | What it controls                                   |
+| --------------- | ------------- | -------------------------------------------------- |
+| `v0`            | 8 units/s     | Barrier travel speed at run start                  |
+| `vmax`          | 22 units/s    | Barrier travel speed after ramp                    |
+| `T_ramp`        | 60 s          | Time to reach `vmax`                               |
+| `T_smooth`      | 20 s          | When dial detents disappear                        |
+| `T_tight`       | 45 s          | When barrier tolerance shrinks                     |
+| `toleranceEasy` | 25°           | Half-width of acceptance band at low difficulty    |
+| `toleranceHard` | 8°            | Half-width after `T_tight`                         |
+| `basePoints`    | 100           | Points per break before multipliers                |
+| `maxBonusGain`  | 0.5           | Maximum tolerance-bonus multiplier (perfect match) |
+| `powerupDropP`  | 0.05          | Per-barrier independent drop probability           |
 
 Other open items:
 
