@@ -24,12 +24,12 @@ export function makeRenderContext(canvas: HTMLCanvasElement): RenderContext {
 	scene.fog = new THREE.Fog(0x000005, 40, 130);
 
 	const camera = new THREE.PerspectiveCamera(
-		70,
+		75,
 		canvas.clientWidth / canvas.clientHeight,
 		0.1,
 		200
 	);
-	camera.position.set(0, 2.5, -6);
+	camera.position.set(0, 3.5, -10);
 	camera.lookAt(0, 0.5, 30);
 
 	const root = new THREE.Group();
