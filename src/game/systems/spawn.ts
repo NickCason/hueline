@@ -3,7 +3,7 @@ import type { LaneIndex, PowerupKind } from '../components';
 import { currentTolerance } from './difficulty';
 
 export const SPAWN_Z = 120;
-export const SPAWN_GAP = 12;
+export const SPAWN_GAP = 18;
 const KINDS: PowerupKind[] = ['slowMo', 'gradient', 'magnet'];
 
 export function spawnTick(state: GameState, _dt: number): GameState {
@@ -17,7 +17,7 @@ export function spawnTick(state: GameState, _dt: number): GameState {
 	// Seed pipeline if empty (~10 barriers stretching from player toward SPAWN_Z)
 	if (barriers.length === 0) {
 		const seeded: typeof barriers = [];
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 6; i++) {
 			const lane = Math.floor(state.rng() * state.tuning.laneCount) as LaneIndex;
 			const targetHue = state.rng() * 360;
 			const powerupRoll = state.rng();
