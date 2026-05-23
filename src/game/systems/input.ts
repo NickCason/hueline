@@ -1,6 +1,6 @@
 import type { GameState } from '../state';
 import type { LaneIndex } from '../components';
-import { normalizeHue, snapToDetents } from '../hue';
+import { normalizeHue } from '../hue';
 
 export type Intent = { type: 'lane'; delta: -1 | 1 } | { type: 'hue'; deltaDeg: number };
 
@@ -9,8 +9,6 @@ export function applyInput(state: GameState, intents: Intent[]): GameState {
 
 	let lane = state.player.lane;
 	let hue = state.player.hue;
-	const detentsActive =
-		state.run.elapsed < state.tuning.T_smooth + state.upgrades.notchedDifficultyDelay * 5;
 
 	for (const i of intents) {
 		if (i.type === 'lane') {
@@ -20,8 +18,6 @@ export function applyInput(state: GameState, intents: Intent[]): GameState {
 			hue = normalizeHue(hue + i.deltaDeg);
 		}
 	}
-
-	if (detentsActive) hue = snapToDetents(hue, state.tuning.detents);
 
 	if (lane === state.player.lane && hue === state.player.hue) return state;
 	return { ...state, player: { lane, hue } };
