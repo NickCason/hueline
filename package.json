@@ -1,5 +1,6 @@
 {
 	"name": "hueline",
+	"description": "Tunnel-runner PWA — spin the hue dial, break the barrier, don't blink.",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
