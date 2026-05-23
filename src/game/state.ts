@@ -34,7 +34,7 @@ export function makeInitialState(opts: InitOptions = {}): GameState {
 	return {
 		tuning: TUNING,
 		run: { status: 'idle', elapsed: 0, score: 0, streak: 0 },
-		player: { lane: 1, hue: 0 },
+		player: { hue: 0 },
 		barriers: [],
 		pickups: [],
 		activePowerups: [],
@@ -48,7 +48,7 @@ export function startRun(s: GameState): GameState {
 	return {
 		...s,
 		run: { status: 'running', elapsed: 0, score: 0, streak: 0 },
-		player: { lane: 1, hue: 0 },
+		player: { hue: 0 },
 		barriers: [],
 		pickups: [],
 		activePowerups: []

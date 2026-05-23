@@ -3,9 +3,9 @@ import { TUNING } from './tuning';
 
 describe('TUNING constants', () => {
 	it('matches the values in the spec', () => {
-		expect(TUNING.v0).toBe(8);
-		expect(TUNING.vmax).toBe(22);
-		expect(TUNING.T_ramp).toBe(60);
+		expect(TUNING.v0).toBe(5);
+		expect(TUNING.vmax).toBe(20);
+		expect(TUNING.T_ramp).toBe(90);
 		expect(TUNING.T_smooth).toBe(20);
 		expect(TUNING.T_tight).toBe(45);
 		expect(TUNING.toleranceEasy).toBe(25);
@@ -14,7 +14,6 @@ describe('TUNING constants', () => {
 		expect(TUNING.maxBonusGain).toBe(0.5);
 		expect(TUNING.powerupDropP).toBe(0.05);
 		expect(TUNING.detents).toBe(8);
-		expect(TUNING.laneCount).toBe(3);
 	});
 
 	it('exposes powerup durations', () => {

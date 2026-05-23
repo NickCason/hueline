@@ -3,20 +3,12 @@ import { powerupTick } from './powerup';
 import { startRun, makeInitialState } from '../state';
 
 describe('powerupTick', () => {
-	it('activates a pickup when player crosses its z plane in the same lane', () => {
+	it('activates a pickup when player crosses its z plane', () => {
 		const s = startRun(makeInitialState());
-		s.pickups.push({ id: 1, z: 0.4, lane: 1, kind: 'slowMo' });
+		s.pickups.push({ id: 1, z: 0.4, kind: 'slowMo' });
 		const s2 = powerupTick(s, 0);
 		expect(s2.pickups.length).toBe(0);
 		expect(s2.activePowerups[0]).toEqual({ kind: 'slowMo', remaining: 4 });
-	});
-
-	it('leaves a pickup alone if in a different lane', () => {
-		const s = startRun(makeInitialState());
-		s.pickups.push({ id: 1, z: 0.4, lane: 0, kind: 'slowMo' });
-		const s2 = powerupTick(s, 0);
-		expect(s2.pickups.length).toBe(1);
-		expect(s2.activePowerups.length).toBe(0);
 	});
 
 	it('decays time-based powerups by dt × currentTimeScale (real-time, not game-time)', () => {
@@ -36,7 +28,7 @@ describe('powerupTick', () => {
 	it('stacks duplicate powerups by refreshing remaining', () => {
 		const s = startRun(makeInitialState());
 		s.activePowerups.push({ kind: 'slowMo', remaining: 1 });
-		s.pickups.push({ id: 9, z: 0.4, lane: 1, kind: 'slowMo' });
+		s.pickups.push({ id: 9, z: 0.4, kind: 'slowMo' });
 		const s2 = powerupTick(s, 0);
 		expect(s2.activePowerups.length).toBe(1);
 		expect(s2.activePowerups[0].remaining).toBe(4);

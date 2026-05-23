@@ -9,7 +9,6 @@ describe('makeInitialState', () => {
 		expect(s.run.elapsed).toBe(0);
 		expect(s.run.score).toBe(0);
 		expect(s.run.streak).toBe(0);
-		expect(s.player.lane).toBe(1);
 		expect(s.player.hue).toBe(0);
 		expect(s.barriers).toEqual([]);
 		expect(s.pickups).toEqual([]);

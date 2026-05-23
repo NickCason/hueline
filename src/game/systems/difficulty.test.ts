@@ -9,14 +9,14 @@ const run = (elapsed: number) => {
 
 describe('currentSpeed', () => {
 	it('returns v0 at t=0', () => {
-		expect(currentSpeed(run(0))).toBe(8);
+		expect(currentSpeed(run(0))).toBe(5);
 	});
 	it('ramps linearly to vmax at T_ramp', () => {
-		expect(currentSpeed(run(30))).toBeCloseTo(15, 5);
-		expect(currentSpeed(run(60))).toBe(22);
+		expect(currentSpeed(run(45))).toBeCloseTo(12.5, 5);
+		expect(currentSpeed(run(90))).toBe(20);
 	});
 	it('clamps at vmax beyond T_ramp', () => {
-		expect(currentSpeed(run(120))).toBe(22);
+		expect(currentSpeed(run(180))).toBe(20);
 	});
 });
 

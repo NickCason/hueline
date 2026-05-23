@@ -28,10 +28,6 @@ export function collisionTick(state: GameState, _dt: number): GameState {
 	const magnetR = magnet ? state.tuning.powerups.magnet.snapRadius : 0;
 
 	for (const b of arrived) {
-		if (b.lane !== state.player.lane) {
-			// Barrier passed through a different lane — no penalty, no points, no streak break.
-			continue;
-		}
 		let matched = false;
 		if (b.gradient) {
 			matched = withinGradient(state.player.hue, b.gradient);

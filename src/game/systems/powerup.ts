@@ -22,8 +22,7 @@ export function powerupTick(state: GameState, dt: number): GameState {
 	let active = state.activePowerups;
 	const remainingPickups = [];
 	for (const p of state.pickups) {
-		const collected =
-			p.lane === state.player.lane && p.z <= PICKUP_THRESHOLD && p.z >= PLAYER_Z - 5;
+		const collected = p.z <= PICKUP_THRESHOLD && p.z >= PLAYER_Z - 5;
 		if (collected) {
 			const existing = active.find((a) => a.kind === p.kind);
 			const fresh = durationFor(state, p.kind);

@@ -4,20 +4,6 @@ import { makeInitialState, startRun } from '../state';
 import { normalizeHue } from '../hue';
 
 describe('applyInput', () => {
-	it('clamps lane changes to [0,2]', () => {
-		let s = startRun(makeInitialState());
-		s = applyInput(s, [{ type: 'lane', delta: -1 }]);
-		expect(s.player.lane).toBe(0);
-		s = applyInput(s, [{ type: 'lane', delta: -1 }]);
-		expect(s.player.lane).toBe(0);
-		s = applyInput(s, [
-			{ type: 'lane', delta: 1 },
-			{ type: 'lane', delta: 1 },
-			{ type: 'lane', delta: 1 }
-		]);
-		expect(s.player.lane).toBe(2);
-	});
-
 	it('rotates hue continuously after detent threshold', () => {
 		const s0 = {
 			...startRun(makeInitialState()),
@@ -37,11 +23,7 @@ describe('applyInput', () => {
 
 	it('ignores input when run status is not running', () => {
 		let s = makeInitialState(); // idle
-		s = applyInput(s, [
-			{ type: 'lane', delta: 1 },
-			{ type: 'hue', deltaDeg: 90 }
-		]);
-		expect(s.player.lane).toBe(1);
+		s = applyInput(s, [{ type: 'hue', deltaDeg: 90 }]);
 		expect(s.player.hue).toBe(0);
 	});
 });
