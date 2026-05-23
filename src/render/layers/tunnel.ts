@@ -8,10 +8,10 @@ export function makeTunnelLayer(): { object: THREE.Object3D; tick: (t: number) =
 		lanes: TUNING.laneCount,
 		halfWidth: 6,
 		height: 4,
-		depth: 120,
-		rings: 16
+		depth: 130,
+		rings: 32
 	});
-	const mat = makeNeonEdge({ color: '#00e5ff', intensity: 0.8 });
+	const mat = makeNeonEdge({ color: '#00e5ff', intensity: 1.0 });
 	const obj = new THREE.LineSegments(geo, mat);
 	return {
 		object: obj,

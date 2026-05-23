@@ -21,7 +21,7 @@ export function makeRenderContext(canvas: HTMLCanvasElement): RenderContext {
 	renderer.setClearColor(0x000005, 1);
 
 	const scene = new THREE.Scene();
-	scene.fog = new THREE.Fog(0x000005, 40, 130);
+	scene.fog = new THREE.Fog(0x000005, 30, 120);
 
 	const camera = new THREE.PerspectiveCamera(
 		75,
