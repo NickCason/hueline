@@ -11,7 +11,7 @@ export function makeTunnelLayer(): { object: THREE.Object3D; tick: (t: number) =
 		depth: 120,
 		rings: 16
 	});
-	const mat = makeNeonEdge({ color: '#00e5ff', intensity: 1.6 });
+	const mat = makeNeonEdge({ color: '#00e5ff', intensity: 0.8 });
 	const obj = new THREE.LineSegments(geo, mat);
 	return {
 		object: obj,

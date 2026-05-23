@@ -39,9 +39,9 @@ export function makeRenderContext(canvas: HTMLCanvasElement): RenderContext {
 	composer.addPass(new RenderPass(scene, camera));
 	const bloom = new UnrealBloomPass(
 		new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
-		0.9,
-		0.6,
-		0.0
+		0.35,
+		0.4,
+		0.75
 	);
 	composer.addPass(bloom);
 

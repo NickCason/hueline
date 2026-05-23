@@ -41,7 +41,7 @@ export function makeGlassIridescent(opts: { hue: number; opacity?: number }): TH
         vec3 base = hsv2rgb(baseHsv);
         vec3 iridColor = hsv2rgb(vec3(mod(uHue / 360.0 + irid * 0.15, 1.0), 0.6, 1.0));
         vec3 color = mix(base, iridColor, fresnel);
-        gl_FragColor = vec4(color, mix(uOpacity, 1.0, fresnel));
+        gl_FragColor = vec4(color, mix(uOpacity, 0.95, fresnel));
       }
     `
 	});
